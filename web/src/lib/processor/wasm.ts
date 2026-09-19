@@ -59,7 +59,16 @@ export class Core {
   }
 
   static async load(): Promise<Core> {
-    const { instance } = await WebAssembly.instantiateStreaming(fetch(wasmUrl), {})
+    const response = await fetch(wasmUrl)
+    if (!response.ok) throw new Error(`failed to load core: HTTP ${response.status}`)
+    // Streaming compile needs `application/wasm`; fall back for hosts that
+    // serve it as octet-stream.
+    let instance: WebAssembly.Instance
+    if (response.headers.get('content-type')?.includes('application/wasm')) {
+      instance = (await WebAssembly.instantiateStreaming(response, {})).instance
+    } else {
+      instance = (await WebAssembly.instantiate(await response.arrayBuffer(), {})).instance
+    }
     return new Core(instance.exports as unknown as Exports)
   }
 
