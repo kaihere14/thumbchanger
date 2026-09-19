@@ -5,7 +5,7 @@
 <h4 align="center">
   <a href="https://github.com/kaihere14/videonail">Repository</a> |
   <a href="docs/about.md">Product Doc</a> |
-  <a href="https://videonail.vercel.app">Web UI</a>
+  <a href="https://videonail.armandev.space">Web UI</a>
 </h4>
 
 <p align="center">
