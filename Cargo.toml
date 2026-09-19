@@ -1,0 +1,23 @@
+[package]
+name = "thumbchanger"
+version = "0.1.0"
+edition = "2024"
+description = "Replace embedded cover artwork in MP4 files without re-encoding"
+
+[lib]
+# rlib for the CLI and tests; cdylib for the browser build:
+#   cargo build --release --lib --target wasm32-unknown-unknown
+crate-type = ["rlib", "cdylib"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+
+[dependencies]
+# CLI argument parsing (derive API).
+clap = { version = "4.6", features = ["derive"] }
+# Error context for the binary; library-style modules return anyhow::Result too
+# for now — revisit with thiserror if a stable error API becomes useful.
+anyhow = "1.0"
